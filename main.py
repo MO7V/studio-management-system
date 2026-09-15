@@ -1,83 +1,19 @@
 import database
 import tkinter as tk 
 
-root = tk.Tk()
-BG_COLOR = "#1e1e1e"
-SIDEBAR_COLOR = "#252526"
-TEXT_COLOR = "#ffffff"
-BUTTON_COLOR = "#2d2d30"
-root.title("Studio Management System")
-root.geometry("1400x800")
-sidebar = tk.Frame(root, bg=SIDEBAR_COLOR,width=220)
-sidebar.pack(side="left", fill="y")
-sidebar.pack_propagate(False)
-root.configure(bg=BG_COLOR)
-title = tk.Label(
-    sidebar,
-    text="Studio Management",
-    bg=SIDEBAR_COLOR,
-    fg=TEXT_COLOR,
-    font=("Segoe UI", 16, "bold")
-)
-title.pack(pady=30)
-def show_dashboard():
-    print("Dashboard clicked")
-dashboard_button = tk.Button(
-    sidebar,
-    text="Dashboard",
-    bg=BUTTON_COLOR,
-    fg=TEXT_COLOR,
-    borderwidth=1,
-    relief="solid",
-    command=show_dashboard
-)
 
-dashboard_button.pack(
-    fill="x",
-    padx=15,
-    pady=5,
-    
-)
-content = tk.Frame(
-    root,
-    bg=BG_COLOR
-)
-
-content.pack(
-    side="left",
-    fill="both",
-    expand=True
-)
-dashboard_title = tk.Label(
-    content,
-    text="Dashboard",
-    bg=BG_COLOR,
-    fg=TEXT_COLOR,
-    font=("Segoe UI", 16, "bold"),
-    padx=10,
-    pady=12
-)
-dashboard_title.pack()
-name_entry = tk.Entry(
-    content
-)
-name_entry.pack()
-root.mainloop()
 
 # database.add_customer("mmd","0910","ggg@gmile","azar")
 def create_customer():
     
 
-
-    name = input("your name: ")
-    phone = input("your number: ")
-
+    name = name_entry.get()
+    phone = phone_entry.get()
     if not name or not phone:
         print("name and phone are required.")
         return
-
-    email = input("your email: ")
-    company = input("your company: ")
+    email = email_entry.get()
+    company = company_entry.get()
 
     database.add_customer(name, phone, email, company)
 
@@ -300,6 +236,212 @@ def remove_task():
 
     database.delete_task(id_t)
 
+
+
+
+# 000000000000000000000000000000000
+import tkinter as tk
+
+from ui.customers import create_customer_form
+from ui.dashboard import show_dashboard
+from ui.employees import show_employee
+from ui.projects import show_project
+from ui.tasks import show_task
+def clear_content():
+    for widgat in content.winfo_children():
+        widgat.destroy()
+root = tk.Tk()
+
+BG_COLOR = "#1e1e1e"
+SIDEBAR_COLOR = "#252526"
+TEXT_COLOR = "#ffffff"
+BUTTON_COLOR = "#2d2d30"
+
+root.title("Studio Management System")
+root.geometry("1400x800")
+root.configure(bg=BG_COLOR)
+
+
+# Sidebar
+sidebar = tk.Frame(
+    root,
+    bg=SIDEBAR_COLOR,
+    width=220
+)
+
+sidebar.pack(
+    side="left",
+    fill="y"
+)
+
+sidebar.pack_propagate(False)
+
+
+title = tk.Label(
+    sidebar,
+    text="Studio Management",
+    bg=SIDEBAR_COLOR,
+    fg=TEXT_COLOR,
+    font=("Segoe UI", 16, "bold")
+)
+
+title.pack(pady=30)
+
+
+# Sidebar Buttons
+
+dashboard_button = tk.Button(
+    sidebar,
+    text="Dashboard",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    activebackground="#3a3a3d",
+    activeforeground=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    font=("Segoe UI", 11, "bold"),
+    cursor="hand2",
+    command=lambda: (
+    clear_content(),
+    show_dashboard(content, BG_COLOR, TEXT_COLOR)
+)
+)
+
+dashboard_button.pack(
+    fill="x",
+    padx=15,
+    pady=5
+)
+
+
+customers_button = tk.Button(
+    sidebar,
+    text="Customers",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    activebackground="#3a3a3d",
+    activeforeground=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    font=("Segoe UI", 11, "bold"),
+    cursor="hand2",
+    command=lambda: (
+    clear_content(),
+    create_customer_form(
+        content,
+        BG_COLOR,
+        TEXT_COLOR,
+        BUTTON_COLOR
+    )
+)
+
+)
+
+customers_button.pack(
+    fill="x",
+    padx=15,
+    pady=5
+)
+
+
+projects_button = tk.Button(
+    sidebar,
+    text="Projects",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    activebackground="#3a3a3d",
+    activeforeground=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    font=("Segoe UI", 11, "bold"),
+    cursor="hand2",
+    command=lambda: (
+    clear_content(),
+    show_project(content, BG_COLOR, TEXT_COLOR)
+)
+)
+
+
+projects_button.pack(
+    fill="x",
+    padx=15,
+    pady=5
+)
+
+
+employees_button = tk.Button(
+    sidebar,
+    text="Employees",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    activebackground="#3a3a3d",
+    activeforeground=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    font=("Segoe UI", 11, "bold"),
+    cursor="hand2",
+    command=lambda: (
+    clear_content(),
+    show_employee(content, BG_COLOR, TEXT_COLOR)
+)
+)
+
+employees_button.pack(
+    fill="x",
+    padx=15,
+    pady=5
+)
+
+
+tasks_button = tk.Button(
+    sidebar,
+    text="Tasks",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    activebackground="#3a3a3d",
+    activeforeground=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    font=("Segoe UI", 11, "bold"),
+    cursor="hand2",
+    command=lambda: (
+    clear_content(),
+    show_task(content, BG_COLOR, TEXT_COLOR)
+)
+)
+
+
+tasks_button.pack(
+    fill="x",
+    padx=15,
+    pady=5
+)
+
+
+# Main Content
+
+content = tk.Frame(
+    root,
+    bg=BG_COLOR
+)
+
+content.pack(
+    side="left",
+    fill="both",
+    expand=True
+)
+
+
+# Customers page
+create_customer_form(
+    content,
+    BG_COLOR,
+    TEXT_COLOR,
+    BUTTON_COLOR
+)
+
+
+root.mainloop()
 
 # ____________TESTS_____________
 

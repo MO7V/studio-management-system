@@ -44,6 +44,50 @@ CREATE TABLE IF NOT EXISTS tasks (
 )
 """)
 
+def add_task(title, description, status, project_id, employee_id):
+    Connection.execute(
+        """
+    INSERT INTO tasks (title, description, status, project_id, employee_id)
+    VALUES (?, ?, ?, ?, ?)
+    """,
+        (title, description, status, project_id, employee_id),
+    )
+
+    Connection.commit()
+
+
+def get_tasks():
+
+    result = Connection.execute("SELECT * FROM tasks")
+
+    tasks = result.fetchall()
+
+    return tasks
+
+
+def update_task(title, description, status, project_id, employee_id, id):
+    Connection.execute(
+        """
+        UPDATE tasks
+        SET title = ?, description = ?, status = ?, project_id = ?, employee_id = ?
+        WHERE id = ?
+        """,
+        (title, description, status, project_id, employee_id, id)
+    )
+    Connection.commit()
+
+
+def delete_task(id):
+    Connection.execute(
+        """
+        DELETE FROM tasks
+        WHERE id = ?
+        """,
+        (id,)
+    )
+    Connection.commit()
+
+
 def add_project(title, description, status, customer_id):
     Connection.execute(
         """
@@ -61,9 +105,6 @@ def get_projects():
     project = result.fetchall()
     return project
 
-
-for project in get_projects():
-    print(project)
 
 
 def update_project(title, description, status, customer_id, id):
@@ -108,8 +149,7 @@ def get_customers():
     return customers
 
 
-for customer in get_customers():
-    print(customer)
+
 
 
 def update_customers(name, phone, email, company, id):
@@ -173,5 +213,70 @@ def delete_employee(id):
     )
     Connection.commit()
 
+# 1. Customer
+add_customer(
+    "ABC Company",
+    "09120000000",
+    "abc@example.com",
+    "ABC"
+)
 
+
+# 2. Employee
+add_employee(
+    "Ali",
+    "09121111111",
+    "ali@example.com",
+    "Designer"
+)
+
+
+# 3. Project
+add_project(
+    "Website Project",
+    "Create company website",
+    "pending",
+    1
+)
+
+
+# 4. Task
+add_task(
+    "Design Login Page",
+    "Create login page UI",
+    "pending",
+    1,
+    1
+)
+
+
+# =========================
+# SHOW DATA
+# =========================
+
+print("========== CUSTOMERS ==========")
+
+for customer in get_customers():
+    print(customer)
+
+
+print("========== EMPLOYEES ==========")
+
+for employee in get_employee():
+    print(employee)
+
+
+print("========== PROJECTS ==========")
+
+for project in get_projects():
+    print(project)
+
+
+print("========== TASKS ==========")
+
+for task in get_tasks():
+    print(task)
+
+
+Connection.close()
 Connection.close()

@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 )
 """)
 
+
 def add_task(title, description, status, project_id, employee_id):
     Connection.execute(
         """
@@ -72,7 +73,7 @@ def update_task(title, description, status, project_id, employee_id, id):
         SET title = ?, description = ?, status = ?, project_id = ?, employee_id = ?
         WHERE id = ?
         """,
-        (title, description, status, project_id, employee_id, id)
+        (title, description, status, project_id, employee_id, id),
     )
     Connection.commit()
 
@@ -83,7 +84,7 @@ def delete_task(id):
         DELETE FROM tasks
         WHERE id = ?
         """,
-        (id,)
+        (id,),
     )
     Connection.commit()
 
@@ -106,7 +107,6 @@ def get_projects():
     return project
 
 
-/
 def update_project(title, description, status, customer_id, id):
     Connection.execute(
         """UPDATE projects
@@ -147,9 +147,6 @@ def get_customers():
     result = Connection.execute("SELECT * FROM customers")
     customers = result.fetchall()
     return customers
-
-
-
 
 
 def update_customers(name, phone, email, company, id):
@@ -212,4 +209,3 @@ def delete_employee(id):
         (id,),
     )
     Connection.commit()
-    

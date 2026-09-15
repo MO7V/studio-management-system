@@ -1,5 +1,12 @@
 import database
+import tkinter as tk 
 
+root = tk.Tk()
+
+root.title("Studio Management System")
+root.geometry("900x600")
+
+root.mainloop()
 
 # database.add_customer("mmd","0910","ggg@gmile","azar")
 def create_customer():

@@ -31,6 +31,63 @@ CREATE TABLE IF NOT EXISTS projects  (
     FOREIGN KEY (customer_id) REFERENCES customers(id)
 )
 """)
+Connection.execute("""
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    description TEXT, 
+    status TEXT,
+    project_id INTEGER,
+    employee_id INTEGER,
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+)
+""")
+
+def add_project(title, description, status, customer_id):
+    Connection.execute(
+        """
+    INSERT INTO projects (title, description, status, customer_id)
+    VALUES (?, ?, ?, ?)
+    """,
+        (title, description, status, customer_id),
+    )
+
+    Connection.commit()
+
+
+def get_projects():
+    result = Connection.execute("SELECT * FROM projects")
+    project = result.fetchall()
+    return project
+
+
+for project in get_projects():
+    print(project)
+
+
+def update_project(title, description, status, customer_id, id):
+    Connection.execute(
+        """UPDATE projects
+    SET title = ?, description = ?, status = ?, customer_id = ?
+    WHERE id = ?
+    """,
+        (title, description, status, customer_id, id),
+    )
+    Connection.commit()
+
+
+def delete_project(
+    id,
+):
+    Connection.execute(
+        """
+    DELETE FROM projects
+    WHERE id = ?
+    """,
+        (id,),
+    )
+    Connection.commit()
 
 
 def add_customer(name, phone, email, company):

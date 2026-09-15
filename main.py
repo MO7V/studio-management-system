@@ -45,3 +45,38 @@ def edit_employee():
 def remove_employee():
     id_e = input("id for dellete employee:")
     database.delete_employee(id_e)
+    
+def create_project():
+    title = input("title:")
+    description = input("description:")
+    status = input("status:")
+    customer_id =  input("customer_id:")
+    database.add_project(title, description, status, customer_id)
+    
+def show_projects():
+    projects = database.get_projects()
+    for project in  projects:
+            print(project)
+
+def edit_project():
+    id_p =input("id:")
+    title = input("title:")
+    description = input("description:")
+    status = input("status:")
+    customer_id =  input("customer_id:")
+    database.update_project(title, description, status, customer_id, id_p)
+
+def remove_project():
+    id_p = input("id for dellete project:")
+    database.delete_project(id_p)
+    
+def create_task():
+
+
+def show_tasks():
+
+
+def edit_task():
+
+
+def remove_task():

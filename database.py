@@ -213,4 +213,3 @@ def delete_employee(id):
     )
     Connection.commit()
     
-Connection.close()

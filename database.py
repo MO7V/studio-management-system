@@ -106,7 +106,7 @@ def get_projects():
     return project
 
 
-
+/
 def update_project(title, description, status, customer_id, id):
     Connection.execute(
         """UPDATE projects

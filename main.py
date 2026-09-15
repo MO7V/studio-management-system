@@ -2,14 +2,72 @@ import database
 import tkinter as tk 
 
 root = tk.Tk()
-
+BG_COLOR = "#1e1e1e"
+SIDEBAR_COLOR = "#252526"
+TEXT_COLOR = "#ffffff"
+BUTTON_COLOR = "#2d2d30"
 root.title("Studio Management System")
-root.geometry("900x600")
+root.geometry("1400x800")
+sidebar = tk.Frame(root, bg=SIDEBAR_COLOR,width=220)
+sidebar.pack(side="left", fill="y")
+sidebar.pack_propagate(False)
+root.configure(bg=BG_COLOR)
+title = tk.Label(
+    sidebar,
+    text="Studio Management",
+    bg=SIDEBAR_COLOR,
+    fg=TEXT_COLOR,
+    font=("Segoe UI", 16, "bold")
+)
+title.pack(pady=30)
+def show_dashboard():
+    print("Dashboard clicked")
+dashboard_button = tk.Button(
+    sidebar,
+    text="Dashboard",
+    bg=BUTTON_COLOR,
+    fg=TEXT_COLOR,
+    borderwidth=1,
+    relief="solid",
+    command=show_dashboard
+)
 
+dashboard_button.pack(
+    fill="x",
+    padx=15,
+    pady=5,
+    
+)
+content = tk.Frame(
+    root,
+    bg=BG_COLOR
+)
+
+content.pack(
+    side="left",
+    fill="both",
+    expand=True
+)
+dashboard_title = tk.Label(
+    content,
+    text="Dashboard",
+    bg=BG_COLOR,
+    fg=TEXT_COLOR,
+    font=("Segoe UI", 16, "bold"),
+    padx=10,
+    pady=12
+)
+dashboard_title.pack()
+name_entry = tk.Entry(
+    content
+)
+name_entry.pack()
 root.mainloop()
 
 # database.add_customer("mmd","0910","ggg@gmile","azar")
 def create_customer():
+    
+
 
     name = input("your name: ")
     phone = input("your number: ")

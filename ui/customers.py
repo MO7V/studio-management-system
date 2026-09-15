@@ -1,6 +1,6 @@
 import tkinter as tk
 import database
-
+from tkinter import ttk
 
 def create_customer():
     name = name_entry.get()
@@ -14,6 +14,15 @@ def create_customer():
         email,
         company
     )
+def load_customers(customer_table):
+    customers = database.get_customers()
+
+    for customer in customers:
+        customer_table.insert(
+            "",
+            "end",
+            values=customer
+        )
 
 
 def create_customer_form(
@@ -28,21 +37,89 @@ def create_customer_form(
     global email_entry
     global company_entry
 
-    customers_title = tk.Label(
+
+
+    form_frame = tk.Frame(
         content,
-        text="Customers",
-        bg=BG_COLOR,
-        fg=TEXT_COLOR,
-        font=("Segoe UI", 26, "bold"),
+        bg=BG_COLOR
+    )
+    form_frame.pack(
+        side="left",
+        fill="y",
         padx=20,
         pady=20
     )
 
-    customers_title.pack(anchor="w")
+    list_frame = tk.Frame(
+        content,
+        bg=BG_COLOR
+    )
+    list_frame.pack(
+        side="left",
+        fill="both",
+        expand=True,
+        padx=20,
+        pady=20
+    )
 
+    style = ttk.Style()
+
+    style.theme_use("clam")
+
+    style.configure(
+        "Treeview",
+        background="#252526",
+        foreground="#ffffff",
+        fieldbackground="#252526",
+        rowheight=32
+        
+    )
+
+    style.configure(
+        "Treeview.Heading",
+        background="#2d2d30",
+        foreground="#ffffff"
+    )
+
+    style.map(
+        "Treeview",
+        background=[("selected", "#767E8F")],
+        foreground=[("selected", "#ffffff")]
+    )
+            
+    customer_table = ttk.Treeview(
+        list_frame,
+        columns=("id", "name", "phone", "email", "company"),
+        show="headings"
+    )
+    customer_table.heading("id", text="ID")
+    customer_table.heading("name", text="Name")
+    customer_table.heading("phone", text="Phone")
+    customer_table.heading("email", text="Email")
+    customer_table.heading("company", text="Company")
+
+    customer_table.pack(
+        fill="both",
+        expand=True
+    )
+    load_customers(customer_table)
+
+    customers_title = tk.Label(
+        form_frame,
+        text="Customers",
+        bg=BG_COLOR,
+        fg=TEXT_COLOR,
+        font=("Segoe UI", 26, "bold"),
+        padx=15,
+        pady=15
+    )
+
+    customers_title.pack(
+        anchor="w"
+    )
 
     name_label = tk.Label(
-        content,
+        form_frame,
         text="Name",
         bg=BG_COLOR,
         font=("Segoe UI", 16, "bold"),
@@ -54,9 +131,8 @@ def create_customer_form(
         padx=5
     )
 
-
     name_entry = tk.Entry(
-        content,
+        form_frame,
         bg="#626262",
         fg="#ffffff",
         insertbackground="#ffffff",
@@ -71,9 +147,8 @@ def create_customer_form(
         anchor="w"
     )
 
-
     phone_label = tk.Label(
-        content,
+        form_frame,
         text="Phone Number",
         bg=BG_COLOR,
         font=("Segoe UI", 16, "bold"),
@@ -85,9 +160,8 @@ def create_customer_form(
         padx=5
     )
 
-
     phone_entry = tk.Entry(
-        content,
+        form_frame,
         bg="#626262",
         fg="#ffffff",
         insertbackground="#ffffff",
@@ -103,8 +177,9 @@ def create_customer_form(
     )
 
 
+
     email_label = tk.Label(
-        content,
+        form_frame,
         text="Email",
         bg=BG_COLOR,
         font=("Segoe UI", 16, "bold"),
@@ -116,9 +191,8 @@ def create_customer_form(
         padx=5
     )
 
-
     email_entry = tk.Entry(
-        content,
+        form_frame,
         bg="#626262",
         fg="#ffffff",
         insertbackground="#ffffff",
@@ -134,8 +208,9 @@ def create_customer_form(
     )
 
 
+
     company_label = tk.Label(
-        content,
+        form_frame,
         text="Company",
         bg=BG_COLOR,
         font=("Segoe UI", 16, "bold"),
@@ -147,9 +222,8 @@ def create_customer_form(
         padx=5
     )
 
-
     company_entry = tk.Entry(
-        content,
+        form_frame,
         bg="#626262",
         fg="#ffffff",
         insertbackground="#ffffff",
@@ -165,8 +239,9 @@ def create_customer_form(
     )
 
 
+
     add_customer_button = tk.Button(
-        content,
+        form_frame,
         width=25,
         text="Add Customer",
         bg=BUTTON_COLOR,

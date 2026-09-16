@@ -1,6 +1,10 @@
+import os
 import sqlite3
 
-Connection = sqlite3.connect("studio.db")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "studio.db")
+
+Connection = sqlite3.connect(DB_PATH)
 Connection.execute("PRAGMA foreign_keys = ON")
 
 Connection.execute("""
@@ -45,13 +49,27 @@ CREATE TABLE IF NOT EXISTS tasks (
 """)
 
 
+def _to_id(value):
+
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    value = str(value).strip()
+    if value == "":
+        return None
+    if value.isdigit():
+        return int(value)
+    return value
+
+
 def add_task(title, description, status, project_id, employee_id):
     Connection.execute(
         """
     INSERT INTO tasks (title, description, status, project_id, employee_id)
     VALUES (?, ?, ?, ?, ?)
     """,
-        (title, description, status, project_id, employee_id),
+        (title, description, status, _to_id(project_id), _to_id(employee_id)),
     )
 
     Connection.commit()
@@ -73,7 +91,14 @@ def update_task(title, description, status, project_id, employee_id, id):
         SET title = ?, description = ?, status = ?, project_id = ?, employee_id = ?
         WHERE id = ?
         """,
-        (title, description, status, project_id, employee_id, id),
+        (
+            title,
+            description,
+            status,
+            _to_id(project_id),
+            _to_id(employee_id),
+            _to_id(id),
+        ),
     )
     Connection.commit()
 
@@ -84,7 +109,7 @@ def delete_task(id):
         DELETE FROM tasks
         WHERE id = ?
         """,
-        (id,),
+        (_to_id(id),),
     )
     Connection.commit()
 
@@ -95,7 +120,7 @@ def add_project(title, description, status, customer_id):
     INSERT INTO projects (title, description, status, customer_id)
     VALUES (?, ?, ?, ?)
     """,
-        (title, description, status, customer_id),
+        (title, description, status, _to_id(customer_id)),
     )
 
     Connection.commit()
@@ -113,7 +138,7 @@ def update_project(title, description, status, customer_id, id):
     SET title = ?, description = ?, status = ?, customer_id = ?
     WHERE id = ?
     """,
-        (title, description, status, customer_id, id),
+        (title, description, status, _to_id(customer_id), _to_id(id)),
     )
     Connection.commit()
 
@@ -126,7 +151,7 @@ def delete_project(
     DELETE FROM projects
     WHERE id = ?
     """,
-        (id,),
+        (_to_id(id),),
     )
     Connection.commit()
 
@@ -155,7 +180,7 @@ def update_customers(name, phone, email, company, id):
     SET name = ?,phone = ?,  email = ?,company =?
     WHERE id = ?
     """,
-        (name, phone, email, company, id),
+        (name, phone, email, company, _to_id(id)),
     )
     Connection.commit()
 
@@ -166,7 +191,7 @@ def delete_customer(id):
     DELETE FROM customers
     WHERE id = ?
     """,
-        (id,),
+        (_to_id(id),),
     )
     Connection.commit()
 
@@ -195,7 +220,7 @@ def update_employee(name, phone, email, role, id):
     SET name = ?,phone = ?,  email = ?,role =?
     WHERE id = ?
     """,
-        (name, phone, email, role, id),
+        (name, phone, email, role, _to_id(id)),
     )
     Connection.commit()
 
@@ -206,6 +231,6 @@ def delete_employee(id):
     DELETE FROM employees
     WHERE id = ?
     """,
-        (id,),
+        (_to_id(id),),
     )
     Connection.commit()
